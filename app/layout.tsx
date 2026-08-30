@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "The Hollow Crown",
@@ -24,6 +25,7 @@ export default function RootLayout({
         </main>
 
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

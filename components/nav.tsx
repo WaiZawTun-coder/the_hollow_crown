@@ -1,7 +1,9 @@
 "use client";
 
+import { useCurrentUser } from "@/app/features/auth/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 interface navLinkType {
   id: number;
@@ -38,7 +40,13 @@ const NAV_LINKS: navLinkType[] = [
 ];
 
 const Nav = () => {
+  const { data: user, isLoading } = useCurrentUser();
   const pathname = usePathname();
+
+  useEffect(() => {
+    console.log({ user })
+  }, [user])
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 border-b border-[#A88B4A]/10 bg-[#0B0A09]/90 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
@@ -62,13 +70,13 @@ const Nav = () => {
         </div>
 
         <Link
-          href="/play"
+          href={(user || isLoading) ? "/play" : "/login"}
           className="border border-[#A88B4A]/60 px-5 py-2.5 text-[10px] uppercase tracking-[0.25em] text-[#A88B4A] transition hover:bg-[#A88B4A] hover:text-[#0B0A09]"
         >
-          Play
+          {(user || isLoading) ? "Play" : "Login"}
         </Link>
       </div>
-    </nav>
+    </nav >
   );
 };
 

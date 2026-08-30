@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
 import Nav from "@/components/nav";
-import Footer from "@/components/footer";
+import { QueryProvider } from "@/providers/query-provider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "The Hollow Crown",
@@ -17,17 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
-        <Nav />
-
-        <main className="min-h-screen bg-[#0B0A09] text-[#D8D0C0]">
-          {children}
-        </main>
-
-        <Footer />
+        <QueryProvider>
+          <main className="min-h-screen bg-[#0B0A09] text-[#D8D0C0]">
+            {children}
+          </main>
+        </QueryProvider>
         <Analytics />
         <SpeedInsights />
+
       </body>
     </html>
   );

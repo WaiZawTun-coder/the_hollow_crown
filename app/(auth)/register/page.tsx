@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 export default function RegisterPage() {
@@ -39,86 +41,13 @@ export default function RegisterPage() {
                         </div>
 
                         <form className="space-y-5">
+                            <Input label="Name" id="name" name="name" autoComplete="name" placeholder="Your name" />
 
-                            <div>
+                            <Input label="email" id="email" name="email" autoComplete="email" placeholder="you@example.com" />
 
-                                <label
-                                    htmlFor="name"
-                                    className="mb-2 block text-xs uppercase tracking-[0.2em] text-[#77736b]"
-                                >
-                                    Name
-                                </label>
+                            <Input label="Password" id="password" type="password" name="password" autoComplete="new-password" placeholder="••••••••" />
 
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    autoComplete="name"
-                                    placeholder="Your name"
-                                    className="w-full border border-white/10 bg-[#101113] px-4 py-3.5 text-sm text-[#ddd7ca] outline-none placeholder:text-[#4f4d48] transition focus:border-[#9f936b]/60"
-                                />
-
-                            </div>
-
-                            <div>
-
-                                <label
-                                    htmlFor="email"
-                                    className="mb-2 block text-xs uppercase tracking-[0.2em] text-[#77736b]"
-                                >
-                                    Email
-                                </label>
-
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    placeholder="you@example.com"
-                                    className="w-full border border-white/10 bg-[#101113] px-4 py-3.5 text-sm text-[#ddd7ca] outline-none placeholder:text-[#4f4d48] transition focus:border-[#9f936b]/60"
-                                />
-
-                            </div>
-
-                            <div>
-
-                                <label
-                                    htmlFor="password"
-                                    className="mb-2 block text-xs uppercase tracking-[0.2em] text-[#77736b]"
-                                >
-                                    Password
-                                </label>
-
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="new-password"
-                                    placeholder="••••••••"
-                                    className="w-full border border-white/10 bg-[#101113] px-4 py-3.5 text-sm text-[#ddd7ca] outline-none placeholder:text-[#4f4d48] transition focus:border-[#9f936b]/60"
-                                />
-
-                            </div>
-
-                            <div>
-
-                                <label
-                                    htmlFor="confirmPassword"
-                                    className="mb-2 block text-xs uppercase tracking-[0.2em] text-[#77736b]"
-                                >
-                                    Confirm Password
-                                </label>
-
-                                <input
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    type="password"
-                                    autoComplete="new-password"
-                                    placeholder="••••••••"
-                                    className="w-full border border-white/10 bg-[#101113] px-4 py-3.5 text-sm text-[#ddd7ca] outline-none placeholder:text-[#4f4d48] transition focus:border-[#9f936b]/60"
-                                />
-
-                            </div>
+                            <Input label="New Password" id="new-password" type="password" name="confirmPassword" autoComplete="new-password" placeholder="••••••••" />
 
                             <label className="flex cursor-pointer items-start gap-3 pt-2">
 
@@ -147,13 +76,7 @@ export default function RegisterPage() {
 
                             </label>
 
-                            <button
-                                type="submit"
-                                className="w-full bg-[#9f936b] px-6 py-3.5 text-sm uppercase tracking-[0.2em] text-[#12120f] transition hover:bg-[#b5a66f]"
-                            >
-                                Create Account
-                            </button>
-
+                            <Button type="submit" className="w-full">Create Account</Button>
                         </form>
 
                         {/* DIVIDER */}

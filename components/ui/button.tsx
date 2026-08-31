@@ -65,6 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           transition
           disabled:cursor-not-allowed
           disabled:opacity-50
+          cursor-pointer
           ${variants[variant]}
           ${sizes[size]}
           ${className}

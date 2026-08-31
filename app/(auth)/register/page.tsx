@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import RegisterForm from "@/components/RegisterForm";
 import Link from "next/link";
 
 export default function RegisterPage() {
@@ -40,7 +39,9 @@ export default function RegisterPage() {
 
                         </div>
 
-                        <form className="space-y-5">
+                        <RegisterForm />
+
+                        {/* <form className="space-y-5">
                             <Input label="Name" id="name" name="name" autoComplete="name" placeholder="Your name" />
 
                             <Input label="email" id="email" name="email" autoComplete="email" placeholder="you@example.com" />
@@ -77,7 +78,7 @@ export default function RegisterPage() {
                             </label>
 
                             <Button type="submit" className="w-full">Create Account</Button>
-                        </form>
+                        </form> */}
 
                         {/* DIVIDER */}
                         <div className="my-8 flex items-center gap-4">

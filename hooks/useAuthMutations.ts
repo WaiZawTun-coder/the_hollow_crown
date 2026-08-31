@@ -1,99 +1,80 @@
-import { UserType } from '@/app/features/auth/types';
-import { apiFetch } from '@/lib/api/client';
+import { forgotPassword, login, logout, register, updatePassword } from '@/app/features/auth/api';
+import { ForgotPasswordCredentials, ForgotPasswordResponse, LoginCredentials, LoginResponse, PasswordUpdateCredentials, PasswordUpdateResponse, RegisterCredentials, RegisterResponse } from '@/app/features/auth/types';
 import { setAccessToken } from '@/lib/api/token';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ApiError } from 'next/dist/server/api-utils';
-
-type LoginSuccessState = {
-    accessToken: string;
-    tokenType: "Bearer";
-    expiresInSeconds: number;
-    user: UserType;
-}
-
-const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+import { useRouter } from 'next/navigation';
 
 export function useAuthMutations() {
     const queryClient = useQueryClient();
+    const router = useRouter();
+
+    // Register Mutation
+    const registerMutation = useMutation<
+        RegisterResponse, Error, RegisterCredentials>({
+            mutationFn: register,
+            onSuccess: () => {
+                router.push("/login")
+            },
+        });
 
     // Login Mutation
-    const loginMutation = useMutation({
-        mutationFn: async (credentials: { formData: FormData }) => {
-            const { formData } = credentials;
-            const email = formData.get('email');
-            const password = formData.get('password');
-            const rememberMe = formData.get("rememberMe") == "on";
+    const loginMutation = useMutation<
+        LoginResponse,
+        Error,
+        LoginCredentials
+    >({
+        mutationFn: login,
 
-            if (!email || !password) {
-                return {
-                    success: false,
-                    message: 'Email and password are required.',
-                };
-            }
-
-            const body = { email, password, rememberMe };
-
-            try {
-                const result = await apiFetch<LoginSuccessState>({
-                    path: '/api/auth/login',
-                    host: AUTH_SERVER_URL,
-                    options: {
-                        method: 'POST',
-                        body,
-                    },
-                });
-
-                const { accessToken } = result;
-
-                if (!accessToken) return { scucess: false, message: "Invalid token" }
-
-                return {
-                    success: true,
-                    user: result.user,
-                    token: accessToken
-                };
-            } catch (error) {
-                if (error instanceof Error || error instanceof ApiError) {
-                    return {
-                        success: false,
-                        message: error.message,
-                    };
-                }
-
-                return {
-                    success: false,
-                    message: 'Something went wrong. Please try again.',
-                };
-            }
-        },
         onSuccess: (data) => {
-            if (data?.token) {
-                setAccessToken(data.token);
+            setAccessToken(data.accessToken);
 
-                // Directly seed/update the 'authUser' query cache
-                queryClient.setQueryData(['authUser'], data.user);
-            }
+            queryClient.setQueryData(
+                ["authUser"],
+                data.user
+            );
+
+            router.push("/dashboard")
         },
-        onError: (error) => {
-            console.error({ error })
-        }
     });
 
     // Logout Mutation
-    const logoutMutation = useMutation({
-        mutationFn: async () => {
-            await fetch('/api/auth/logout', { method: 'POST' });
-        },
+    const logoutMutation = useMutation<void, Error>({
+        mutationFn: logout,
+
         onSuccess: () => {
-            localStorage.removeItem('token');
+            setAccessToken(null);
 
-            // Clear the user from cache
-            queryClient.setQueryData(['authUser'], null);
-
-            // Clear all cached queries for security
             queryClient.clear();
         },
     });
 
-    return { loginMutation, logoutMutation };
+    const forgotPasswordMutation = useMutation<
+        ForgotPasswordResponse,
+        Error,
+        ForgotPasswordCredentials
+    >({
+        mutationFn: forgotPassword,
+        onSuccess: (data) => {
+            return data;
+        }
+    })
+
+    const passwordUpdateMutation = useMutation<
+        PasswordUpdateResponse,
+        Error,
+        PasswordUpdateCredentials
+    >({
+        mutationFn: updatePassword,
+        onSuccess: (data) => {
+            return data;
+        }
+    })
+
+    return {
+        registerMutation,
+        loginMutation,
+        logoutMutation,
+        forgotPasswordMutation,
+        passwordUpdateMutation
+    };
 }
